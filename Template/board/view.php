@@ -1,6 +1,13 @@
 <section id="main">
 
-    <span class='title'><?= $this->text->e($project['name']) ?></span>
+    <span class='header'><h1><?= $this->text->e($project['name']) ?>
+    <?php if (! empty($project['description'])): ?>
+    <span class="tooltip" title="<?= $this->text->markdownAttribute($project['description']) ?>">
+        <i class="fa fa-info-circle"></i>
+    </span>
+    <?php endif ?>
+   </h1></span>
+
 
     <?= $this->render('board/table_container', array(
         'project' => $project,
