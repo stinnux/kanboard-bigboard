@@ -27,7 +27,7 @@ use Kanboard\Formatter\BoardFormatter;
           'title' => t('Bigboard'),
           'board_selector' => false,
       )));
-    
+
 
        // First we find all projects the user has access to
        // Then we find all possible columns
@@ -41,7 +41,7 @@ use Kanboard\Formatter\BoardFormatter;
 
        foreach ($project_ids as $id ) {
          $project = $this->projectModel->getById($id);
-         $this->response->html($this->helper->layout->app('bigboard:board/view', array(
+         $this->response->html($this->template->render('bigboard:board/view', array(
              'no_layout' => true,
              'board_selector' => false,
              'project' => $project,
