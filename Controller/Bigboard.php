@@ -22,15 +22,7 @@ use Kanboard\Formatter\BoardFormatter;
 
      public function index()
      {
-       // Draw a header First
-       $this->response->html($this->helper->layout->app('bigboard:board/show', array(
-          'title' => t('Bigboard'),
-          'board_selector' => false,
-      )));
 
-
-       // First we find all projects the user has access to
-       // Then we find all possible columns
        if ($this->userSession->isAdmin()) {
            $project_ids = $this->projectModel->getAllIds();
        } else {
@@ -38,6 +30,14 @@ use Kanboard\Formatter\BoardFormatter;
        }
 
        $nb_projects = count($project_ids);
+
+       // Draw a header First
+       $this->response->html($this->helper->layout->app('bigboard:board/show', array(
+          'title' => t('Bigboard'). " (" . $nb_projects . ")",
+          'board_selector' => false,
+      )));
+
+
 
        foreach ($project_ids as $id ) {
          $project = $this->projectModel->getById($id);
