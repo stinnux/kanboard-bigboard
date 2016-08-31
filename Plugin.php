@@ -11,7 +11,7 @@ class Plugin extends Base
 {
     public function initialize()
     {
-      $this->template->hook->attach('template:projectlist:menubefore', 'bigboard:Bigboard');
+      $this->template->hook->attach('template:project-list:menu:before', 'bigboard:Bigboard');
     }
 
     public function onStartup()
