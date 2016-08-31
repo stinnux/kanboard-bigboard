@@ -40,8 +40,9 @@ use Kanboard\Formatter\BoardFormatter;
 
 
        foreach ($project_ids as $id ) {
-         $project = $this->projectModel->getById($id);
-         $this->response->html($this->template->render('bigboard:board/view', array(
+         $project = $this->projectModel->getByIdWithOwner($id);
+         $search = $this->helper->projectHeader->getSearchQuery($project);
+         echo $this->template->render('bigboard:board/view', array(
              'no_layout' => true,
              'board_selector' => false,
              'project' => $project,
@@ -52,7 +53,7 @@ use Kanboard\Formatter\BoardFormatter;
              'swimlanes' => $this->taskLexer
                  ->build($search)
                  ->format(BoardFormatter::getInstance($this->container)->withProjectId($project['id']))
-         )));
+         ));
 
 
         }
