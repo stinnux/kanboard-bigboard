@@ -30,18 +30,22 @@ use Kanboard\Formatter\BoardFormatter;
        }
 
        $nb_projects = count($project_ids);
-
        // Draw a header First
        $this->response->html($this->helper->layout->app('bigboard:board/show', array(
           'title' => t('Bigboard'). " (" . $nb_projects . ")",
           'board_selector' => false,
       )));
 
-
+      echo $this->template->render('bigboard:board/dropdown',array(
+        'bigboarddisplaymode' => $this->userSession->isBigboardCollapsed()
+      ));
 
        foreach ($project_ids as $id ) {
          $project = $this->projectModel->getByIdWithOwner($id);
          $search = $this->helper->projectHeader->getSearchQuery($project);
+
+         $this->userSession->setBoardDisplayMode($project['id'], $this->userSession->isBigboardCollapsed());
+
          echo $this->template->render('bigboard:board/view', array(
              'no_layout' => true,
              'board_selector' => false,
@@ -58,6 +62,28 @@ use Kanboard\Formatter\BoardFormatter;
 
         }
      }
+
+     public function collapseAll()
+     {
+       $this->changeDisplayMode(true);
+     }
+
+     public function expandAll()
+     {
+       $this->changeDisplayMode(false);
+     }
+
+     private function changeDisplayMode($mode)
+     {
+         $this->userSession->setBigboardDisplayMode($mode);
+
+         if ($this->request->isAjax()) {
+             $this->response->html($this->index());
+         } else {
+             $this->response->redirect($this->helper->url->to('Bigboard','index',array('plugin' => 'Bigboard')));
+         }
+     }
+
 
 
  }

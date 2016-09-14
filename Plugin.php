@@ -14,6 +14,18 @@ class Plugin extends Base
       $this->template->hook->attach('template:project-list:menu:before', 'bigboard:Bigboard');
     }
 
+    public function getClasses()
+    {
+      return array(
+        'Plugin\Bigboard' => array(
+          'UserSession'
+        ),
+        'Plugin\Bigboard\Controller' => array(
+          'Bigboard'
+        )
+      );
+    }
+
     public function onStartup()
     {
         Translator::load($this->languageModel->getCurrentLanguage(), __DIR__.'/Locale');
