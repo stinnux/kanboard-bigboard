@@ -6,47 +6,56 @@ use Kanboard\Controller\BaseController;
 use Kanboard\Formatter\BoardFormatter;
 
 /**
- * Bigboard Controller
- *
- * @package controller
- * @author Thomas Stinner
- */
-
+  * Bigboard Controller.
+  *
+  * @author Thomas Stinner
+  */
  class Bigboard extends BaseController
  {
-    /**
-     * Display a Board which contains multiple projects
-     *
-     * @access public
-     */
-
+     /**
+      * Display a Board which contains multiple projects.
+      */
      public function index()
      {
+         if ($this->userSession->isAdmin()) {
+             $project_ids = $this->projectModel->getAllIds();
+         } else {
+             $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
+         }
 
-       if ($this->userSession->isAdmin()) {
-           $project_ids = $this->projectModel->getAllIds();
-       } else {
-           $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
-       }
+         $nb_projects = count($project_ids);
+           // Draw a header First
+           $this->response->html($this->helper->layout->app('bigboard:board/show', array(
+              'title' => t('Bigboard').' ('.$nb_projects.')',
+              'board_selector' => false,
+          )));
 
-       $nb_projects = count($project_ids);
-       // Draw a header First
-       $this->response->html($this->helper->layout->app('bigboard:board/show', array(
-          'title' => t('Bigboard'). " (" . $nb_projects . ")",
-          'board_selector' => false,
-      )));
+          echo $this->template->render('bigboard:board/dropdown', array(
+            'bigboarddisplaymode' => $this->userSession->isBigboardCollapsed(),
+          ));
 
-      echo $this->template->render('bigboard:board/dropdown',array(
-        'bigboarddisplaymode' => $this->userSession->isBigboardCollapsed()
-      ));
+          $this->showProjects($project_ids);
 
-       foreach ($project_ids as $id ) {
-         $project = $this->projectModel->getByIdWithOwner($id);
-         $search = $this->helper->projectHeader->getSearchQuery($project);
+     }
 
-         $this->userSession->setBoardDisplayMode($project['id'], $this->userSession->isBigboardCollapsed());
+     /**
+      * Show projects.
+      *
+      * @param $project_ids list of project ids to show
+      *
+      * @return bool
+      */
+     private function showProjects($project_ids)
+     {
+       print "<div id='bigboard'>";
 
-         echo $this->template->render('bigboard:board/view', array(
+       foreach ($project_ids as $id) {
+             $project = $this->projectModel->getByIdWithOwner($id);
+             $search = $this->helper->projectHeader->getSearchQuery($project);
+
+             $this->userSession->setBoardDisplayMode($project['id'], $this->userSession->isBigboardCollapsed());
+
+             echo $this->template->render('bigboard:board/view', array(
              'no_layout' => true,
              'board_selector' => false,
              'project' => $project,
@@ -56,37 +65,38 @@ use Kanboard\Formatter\BoardFormatter;
              'board_highlight_period' => $this->configModel->get('board_highlight_period'),
              'swimlanes' => $this->taskLexer
                  ->build($search)
-                 ->format(BoardFormatter::getInstance($this->container)->withProjectId($project['id']))
+                 ->format(BoardFormatter::getInstance($this->container)->withProjectId($project['id'])),
          ));
+         }
 
+         print "</div>";
 
-        }
      }
 
      public function collapseAll()
      {
-       $this->changeDisplayMode(true);
+         $this->changeDisplayMode(true);
      }
 
      public function expandAll()
      {
-       $this->changeDisplayMode(false);
+         $this->changeDisplayMode(false);
      }
 
      private function changeDisplayMode($mode)
      {
          $this->userSession->setBigboardDisplayMode($mode);
 
-         if ($this->request->isAjax()) {
-             $this->response->html($this->index());
+         if ($this->userSession->isAdmin()) {
+             $project_ids = $this->projectModel->getAllIds();
          } else {
-             $this->response->redirect($this->helper->url->to('Bigboard','index',array('plugin' => 'Bigboard')));
+             $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
+         }
+
+         if ($this->request->isAjax()) {
+             $this->showProjects($project_ids);
+         } else {
+             $this->response->redirect($this->helper->url->to('Bigboard', 'index', array('plugin' => 'Bigboard')));
          }
      }
-
-
-
  }
-
-
- ?>
