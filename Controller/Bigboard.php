@@ -4,6 +4,7 @@ namespace Kanboard\Plugin\Bigboard\Controller;
 
 use Kanboard\Controller\BaseController;
 use Kanboard\Formatter\BoardFormatter;
+use Kanboard\Model\UserMetadataModel;
 
 /**
   * Bigboard Controller.
@@ -49,11 +50,11 @@ use Kanboard\Formatter\BoardFormatter;
      {
        print "<div id='bigboard'>";
 
-       foreach ($project_ids as $id) {
-             $project = $this->projectModel->getByIdWithOwner($id);
+       foreach ($project_ids as $project_id) {
+             $project = $this->projectModel->getByIdWithOwner($project_id);
              $search = $this->helper->projectHeader->getSearchQuery($project);
 
-             $this->userSession->setBoardDisplayMode($project['id'], $this->userSession->isBigboardCollapsed());
+             $this->userMetadataCacheDecorator->set(UserMetadataModel::KEY_BOARD_COLLAPSED.$project_id, $this->userSession->isBigboardCollapsed());
 
              echo $this->template->render('bigboard:board/view', array(
              'no_layout' => true,
