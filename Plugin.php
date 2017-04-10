@@ -3,8 +3,8 @@
 namespace Kanboard\Plugin\Bigboard;
 
 use DateTime;
-use Kanboard\Core\Translator;
 use Kanboard\Core\Plugin\Base;
+use Kanboard\Core\Translator;
 use Kanboard\Core\Security\Role;
 
 class Plugin extends Base
@@ -12,6 +12,8 @@ class Plugin extends Base
     public function initialize()
     {
       $this->template->hook->attach('template:project-list:menu:before', 'bigboard:Bigboard');
+      $this->hook->on('template:layout:js', array('template' => 'plugins/Bigboard/Asset/js/BoardDragAndDrop.js'));
+      $this->hook->on('template:layout:js', array('template' => 'plugins/Bigboard/Asset/js/BoardPolling.js'));
     }
 
     public function getClasses()
@@ -55,4 +57,10 @@ class Plugin extends Base
     {
         return 'https://github.com/stinnux/kanboard-bigboard';
     }
+
+    public function getCompatibleVersion()
+    {
+        return '1.0.41';
+    }
+
 }

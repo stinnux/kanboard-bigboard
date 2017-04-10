@@ -9,7 +9,7 @@
    </h1></span>
 
 
-    <?= $this->render('board/table_container', array(
+    <?= $this->render('bigboard:board/table_container', array(
         'project' => $project,
         'swimlanes' => $swimlanes,
         'board_private_refresh_interval' => $board_private_refresh_interval,
