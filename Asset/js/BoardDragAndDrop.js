@@ -44,7 +44,6 @@ Kanboard.BoardDragAndDrop.prototype.dragAndDrop = function() {
                 task.removeClass("draggable-item-selected");
 
                 if (newColumnId != taskColumnId || newSwimlaneId != taskSwimlaneId || newPosition != taskPosition) {
-                    console.log("Saving to " + saveURL + " [" + boardId+"]");
                     self.changeTaskState(taskId);
                     self.save(saveURL, boardId, taskId, taskColumnId, newColumnId, newPosition, newSwimlaneId);
                 }

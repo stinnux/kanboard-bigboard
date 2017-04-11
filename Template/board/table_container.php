@@ -10,10 +10,10 @@
                    class="board-project-<?= $project['id'] ?>"
                    data-project-id="<?= $project['id'] ?>"
                    data-check-interval="<?= $board_private_refresh_interval ?>"
-                   data-save-url="<?= $this->url->href('BoardAjaxController', 'save', array('project_id' => $project['id'])) ?>"
-                   data-reload-url="<?= $this->url->href('BoardAjaxController', 'reload', array('project_id' => $project['id'])) ?>"
-                   data-check-url="<?= $this->url->href('BoardAjaxController', 'check', array('project_id' => $project['id'], 'timestamp' => time())) ?>"
-                   data-task-creation-url="<?= $this->url->href('TaskCreationController', 'show', array('project_id' => $project['id'])) ?>"
+                   data-save-url="<?= $this->url->href('BoardAjaxController', 'save', array('plugin' => "Bigboard", 'project_id' => $project['id'])) ?>"
+                   data-reload-url="<?= $this->url->href('BoardAjaxController', 'reload', array('plugin' => "Bigboard", 'project_id' => $project['id'])) ?>"
+                   data-check-url="<?= $this->url->href('BoardAjaxController', 'check', array('plugin' => "Bigboard", 'project_id' => $project['id'], 'timestamp' => time())) ?>"
+                   data-task-creation-url="<?= $this->url->href('TaskCreationController', 'show', array('plugin' => "Bigboard", 'project_id' => $project['id'])) ?>"
             >
         <?php endif ?>
 
@@ -42,7 +42,7 @@
                     )) ?>
                 <?php endif ?>
 
-                <?= $this->render('board/table_tasks', array(
+                <?= $this->render('bigboard:board/table_tasks', array(
                     'project' => $project,
                     'swimlane' => $swimlane,
                     'not_editable' => isset($not_editable),
