@@ -7,7 +7,7 @@
             <table id="board" class="board-project-<?= $project['id'] ?>">
         <?php else: ?>
             <table id="board"
-                   class="board-project-<?= $project['id'] ?>"
+                   class="board-project"
                    data-project-id="<?= $project['id'] ?>"
                    data-check-interval="<?= $board_private_refresh_interval ?>"
                    data-save-url="<?= $this->url->href('BoardAjaxController', 'save', array('plugin' => "Bigboard", 'project_id' => $project['id'])) ?>"
