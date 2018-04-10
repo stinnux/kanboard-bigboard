@@ -86,12 +86,12 @@ use Kanboard\Model\UserMetadataModel;
 
      private function changeDisplayMode($mode)
      {
-         $this->userSession->setBigboardDisplayMode($mode);
-
+         session_set('bigboardCollapsed', $mode);
+         
          if ($this->userSession->isAdmin()) {
              $project_ids = $this->projectModel->getAllIds();
          } else {
-             $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
+             $project_ids = $this->projectPermissionModel->getActiveProjectIds(session_get('user')['id']);
          }
 
          if ($this->request->isAjax()) {

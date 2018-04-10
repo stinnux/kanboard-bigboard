@@ -12,7 +12,7 @@ class UserSession extends \Kanboard\Core\User\UserSession
    */
    public function isBigboardCollapsed()
    {
-     return ! empty($this->sessionStorage->bigboardCollapsed) ? $this->sessionStorage->bigboardCollapsed : false;
+     return session_is_true('bigboardCollapsed');
    }
 
    /**
@@ -23,7 +23,7 @@ class UserSession extends \Kanboard\Core\User\UserSession
     */
    public function setBigboardDisplayMode($is_collapsed)
    {
-       $this->sessionStorage->bigboardCollapsed = $is_collapsed;
+     session_set('bigboardCollapsed', true);
    }
 
 }

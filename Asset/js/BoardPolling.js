@@ -15,7 +15,7 @@ Kanboard.BoardPolling.prototype.execute = function() {
 Kanboard.BoardPolling.prototype.check = function() {
     if (KB.utils.isVisible() && !this.app.get("BoardDragAndDrop").savingInProgress) {
         var self = this;
-        this.app.showLoadingIcon();
+        if (!$("#app-loading-icon").length) this.app.showLoadingIcon();
         var pollsinprogress=0;
 
         $("table.board-project").each(function() {
@@ -26,10 +26,10 @@ Kanboard.BoardPolling.prototype.check = function() {
                 cache: false,
                 url: url,
                 statusCode: {
-                    200: function(data) {
-                        self.app.get("BoardDragAndDrop").refresh(boardId, data);
+                    200: function(data) {                        
                         pollsinprogress--;
                         if (pollsinprogress <= 0) self.app.hideLoadingIcon();
+                        self.app.get("BoardDragAndDrop").refresh(boardId, data);
                     },
                     304: function () {
                         pollsinprogress--;
@@ -38,5 +38,6 @@ Kanboard.BoardPolling.prototype.check = function() {
                 }
             });
         });
+        if (pollsinprogress <= 0) self.app.hideLoadingIcon();
     }
 };
