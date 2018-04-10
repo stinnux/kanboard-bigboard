@@ -1,4 +1,4 @@
-	<?php
+<?php
 
 namespace Kanboard\Plugin\Bigboard;
 
@@ -54,7 +54,7 @@ class Plugin extends Base
 
     public function getPluginVersion()
     {
-        return '1.0.1';
+        return '1.0.2';
     }
 
     public function getPluginHomepage()
