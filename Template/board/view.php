@@ -7,7 +7,8 @@
     <?php endif ?>
     
     </span>
-
+    </h1></span>
+    
 
     <?= $this->render('bigboard:board/table_container', array(
         'project' => $project,
