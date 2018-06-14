@@ -24,11 +24,25 @@ use Kanboard\Model\UserMetadataModel;
              $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
          }
 
-         $nb_projects = count($project_ids);
+         $search = urldecode($this->request->getStringParam('search'));
+
+         #print $search;
+//         ->withFilter(new TaskProjectsFilter(array_keys($projects)))
+
+/*           $query = $this->taskLexer
+            ->build($search)
+            ->getQuery();
+
+        print $query->buildSelectQuery(); */
+ 
+          $nb_projects = count($project_ids);
            // Draw a header First
            $this->response->html($this->helper->layout->app('bigboard:board/show', array(
-              'title' => t('Bigboard').' ('.$nb_projects.')',
-              'board_selector' => false,
+               'values' => array(
+                   'search' => $search
+               ),
+                'title' => t('Bigboard').' ('.$nb_projects.')',
+                'board_selector' => false,
           )));
 
           echo $this->template->render('bigboard:board/dropdown', array(
@@ -53,6 +67,8 @@ use Kanboard\Model\UserMetadataModel;
        foreach ($project_ids as $project_id) {
              $project = $this->projectModel->getByIdWithOwner($project_id);
              $search = $this->helper->projectHeader->getSearchQuery($project);
+
+             #print "SEARCH2: $search";
 
              $this->userMetadataCacheDecorator->set(UserMetadataModel::KEY_BOARD_COLLAPSED.$project_id, $this->userSession->isBigboardCollapsed());
 
