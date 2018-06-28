@@ -1,6 +1,6 @@
 <section id="main">
 
-    <span class='header'><h1><?= $this->text->e($project['name']) ?>
+    <span class='header'><br><br><b><font color=red><h1><?= $this->text->e($project['name']) ?></font></b>
     
     <?php if (! empty($project['description'])): ?>
         <?= $this->app->tooltipMarkdown($project['description']) ?>
