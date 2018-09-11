@@ -19,7 +19,7 @@ use Kanboard\Model\UserMetadataModel;
      public function index()
      {
          if ($this->userSession->isAdmin()) {
-             $project_ids = $this->projectModel->getAllIds();
+             $project_ids = $this->projectModel->getAllByStatus(ProjectModel::ACTIVE);
          } else {
              $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
          }
