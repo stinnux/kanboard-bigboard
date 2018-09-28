@@ -18,30 +18,46 @@ use Kanboard\Model\UserMetadataModel;
       */
      public function index()
      {
-         if ($this->userSession->isAdmin()) {
-             $project_ids = $this->projectModel->getAllIds();
-         } else {
-             $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
-         }
+        $project_ids = $this->projectPermissionModel->getActiveProjectIds($this->userSession->getId());
 
-        $search=urldecode($this->request->getStringParam('search'));
+         $search = urldecode($this->request->getStringParam('search'));
 
-        $nb_projects = count($project_ids);
-        // Draw a header First
-        $this->response->html($this->helper->layout->app('bigboard:board/show', array(
-            'values' => array(
-                'search' => $search
-            ),
-            'title' => t('Bigboard').' ('.$nb_projects.')',
-            'board_selector' => false,
-        )));
+         #print $search;
+//         ->withFilter(new TaskProjectsFilter(array_keys($projects)))
 
-        echo $this->template->render('bigboard:board/dropdown', array(
+/*           $query = $this->taskLexer
+            ->build($search)
+            ->getQuery();
+
+        print $query->buildSelectQuery(); */
+
+ 
+          $nb_projects = count($project_ids);
+           // Draw a header First
+           $this->response->html($this->helper->layout->app('bigboard:board/show', array(
+                'title' => t('Bigboard').' ('.$nb_projects.')',
+                'board_selector' => false,
+          )));
+
+          echo $this->template->render('bigboard:board/dropdown', array(
             'bigboarddisplaymode' => $this->userMetadataCacheDecorator->get("BIGBOARD_COLLAPSED", 0) == 1,
             'bigboardprojectmode' => $this->userMetadataCacheDecorator->get("BIGBOARD_SHOWEMPTY", 0) == 1
         ));
 
-        $this->showProjects($project_ids);
+        $filters = array(
+        'controller' => "Bigboard",
+        'action' => "index",
+        'search' => $search,
+        'plugin' => "Bigboard",
+        );
+          echo $this->template->render('project_header/search', array(
+              'filters' => $filters,
+              'users_list' => $this->userModel->getActiveUsersList(),
+          ));
+
+          echo "<p>";
+
+          $this->showProjects($project_ids);
      }
 
      /**

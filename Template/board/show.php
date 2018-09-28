@@ -1,4 +1,4 @@
-<div class="filter-box margin-bottom">
+<!-- <div class="filter-box margin-bottom">
     <form method="get" action="<?= $this->url->dir() ?>" class="search">
         <?= $this->form->hidden('controller', array('controller' => 'Bigboard')) ?>
         <?= $this->form->hidden('action', array('action' => 'index')) ?>
@@ -11,3 +11,4 @@
         </div>
     </form>
 </div>
+ -->
