@@ -22,9 +22,6 @@ class Plugin extends Base
     public function getClasses()
     {
       return array(
-        'Plugin\Bigboard' => array(
-          'UserSession'
-        ),
         'Plugin\Bigboard\Controller' => array(
           'Bigboard',
           'BoardAjaxController'
