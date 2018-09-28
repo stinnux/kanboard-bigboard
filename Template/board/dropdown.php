@@ -14,6 +14,16 @@
                   </span>
               </li>
               <li>
+                  <span class="filter-display-mode" <?= $bigboardprojectmode ? '' : 'style="display: none;"' ?>>
+                      <i class="fa fa-eye-slash fa-fw"></i>
+                      <?= $this->url->link(t('Hide empty projects'), 'Bigboard', 'hideEmpty', array('plugin' => 'Bigboard'), false, 'board-project-mode', t('Keyboard shortcut: "%s"', 's')) ?>
+                  </span>
+                  <span class="filter-display-mode" <?= $bigboardprojectmode ? 'style="display: none;"' : '' ?>>
+                      <i class="fa fa-eye fa-fw"></i>
+                      <?= $this->url->link(t('Show empty projects'), 'Bigboard', 'showEmpty', array('plugin' => 'Bigboard'), false, 'board-project-mode', t('Keyboard shortcut: "%s"', 's')) ?>
+                  </span>
+              </li>
+              <li>
                   <span class="filter-compact">
                       <i class="fa fa-th fa-fw"></i> <a href="#" class="filter-toggle-scrolling" title="<?= t('Keyboard shortcut: "%s"', 'c') ?>"><?= t('Compact view') ?></a>
                   </span>
