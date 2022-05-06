@@ -6,7 +6,7 @@
         <div class="input-addon">
             <?= $this->form->text('search', $values, array(), array(empty($values['search']) ? 'autofocus' : '', 'placeholder="'.t('Search').'"'), 'input-addon-field') ?>
             <div class="input-addon-item">
-              <?= $this->render('app/filters_helper') ?>
+              <?= $this->render('app/filters_helper', array('reset' => 'status:open')) ?>
             </div>
         </div>
     </form>
